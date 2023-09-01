@@ -229,8 +229,8 @@ def get_mrt_names_sorted_by_attractions():
         query = """
            SELECT mrt.name, COUNT(attraction.MRT_ID) AS num_attractions
             FROM mrt
-            INNER JOIN attraction ON mrt.id = attraction.MRT_ID
-            GROUP BY mrt.id
+            INNER JOIN attraction ON mrt.id = attraction.MRT_ID AND mrt.name IS NOT NULL
+            GROUP BY mrt.name
             ORDER BY num_attractions DESC;	
         """
         cursor.execute(query)
