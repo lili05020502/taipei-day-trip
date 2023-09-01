@@ -27,11 +27,11 @@ with open("taipei-attractions.json", "r", encoding="utf-8") as json_file:
 #     image_urls = [f"https://{image}" for image in images[1:] if image.lower().endswith((".jpg", ".png"))]
 #     print(image_urls)
 #     if image_urls:
-#         # 將景點 ID 插入到 attractionImg 資料表中的 attraction_id 欄位
+#         # 將景點 ID 插入到 attractionimg 資料表中的 attraction_id 欄位
 #         attraction_id = cursor.lastrowid
 
-#         # 將圖片連結插入到 attractionImg 資料表中的 images 欄位
-#         insert_image_query = "INSERT INTO attractionImg (attraction_id, images) VALUES (%s, %s)"
+#         # 將圖片連結插入到 attractionimg 資料表中的 images 欄位
+#         insert_image_query = "INSERT INTO attractionimg (attraction_id, images) VALUES (%s, %s)"
 #         for image_url in image_urls:
 #             cursor.execute(insert_image_query, (attraction_id, image_url))
 #             db_connection.commit()
@@ -77,11 +77,11 @@ for attraction in attractions:
     image_urls = [f"https://{image}" for image in images[1:] if image.lower().endswith((".jpg",".png"))]
     # print(image_urls)
     if image_urls:
-        # 將景點 ID 插入到 attractionImg 資料表中的 attraction_id 欄位
+        # 將景點 ID 插入到 attractionimg 資料表中的 attraction_id 欄位
         attraction_id = cursor.lastrowid
 
-        # 將圖片連結插入到 attractionImg 資料表中的 images 欄位
-        insert_image_query = "INSERT INTO attractionImg (attraction_id, images) VALUES (%s, %s)"
+        # 將圖片連結插入到 attractionimg 資料表中的 images 欄位
+        insert_image_query = "INSERT INTO attractionimg (attraction_id, images) VALUES (%s, %s)"
         for image_url in image_urls:
             cursor.execute(insert_image_query, (attraction_id, image_url))
             db_connection.commit()

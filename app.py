@@ -122,7 +122,7 @@ def get_attractions():
             }
             print(attraction_data)
             # 查詢該景點的所有圖片並存入陣列
-            images_query = "SELECT images FROM attractionImg WHERE attraction_id = %s"
+            images_query = "SELECT images FROM attractionimg WHERE attraction_id = %s"
             cursor.execute(images_query, (attraction[0],))  # 使用景點的 id 作為參數
             image_rows = cursor.fetchall()
             image_urls = [image_row[0] for image_row in image_rows]
@@ -179,7 +179,7 @@ def get_attraction_by_id(attractionId):
             }
         
         # 取得該景點的圖片網址陣列
-        images_query = "SELECT images FROM attractionImg WHERE attraction_id = %s"
+        images_query = "SELECT images FROM attractionimg WHERE attraction_id = %s"
         cursor.execute(images_query, (attractionId,))
         image_rows = cursor.fetchall()
         image_urls = [image_row[0] for image_row in image_rows]
