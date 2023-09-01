@@ -62,20 +62,20 @@ def get_attractions():
             # 使用 OR 運算符結合兩個條件
             count_query = "SELECT COUNT(*) FROM attraction INNER JOIN mrt ON attraction.MRT_ID = mrt.id WHERE {} OR {}".format(mrt_query, attraction_query)
             count_params = (*mrt_params, *attraction_params)
-            print("count_query:",count_query)
-            print("count_params:",count_params)
+            # print("count_query:",count_query)
+            # print("count_params:",count_params)
         else:
             count_query = "SELECT COUNT(*) FROM attraction"
             count_params = ()
         cursor.execute(count_query, count_params)
         total_records = cursor.fetchone()[0]
-        print("total_records:",total_records)
+        # print("total_records:",total_records)
         # 計算總頁數
         total_pages = (total_records + 11) // 12
         # 假如目前頁數小於總頁數，表示還有下一頁
         has_next_page = page < (total_pages - 1)
-        print("page:",page)
-        print("has_next_page:",has_next_page)
+        # print("page:",page)
+        # print("has_next_page:",has_next_page)
         if has_next_page:
             next_page = page + 1
         else:
@@ -120,7 +120,7 @@ def get_attractions():
                 "lng": attraction[8],
                 "images": [] 
             }
-            print(attraction_data)
+            # print(attraction_data)
             # 查詢該景點的所有圖片並存入陣列
             images_query = "SELECT images FROM attractionimg WHERE attraction_id = %s"
             cursor.execute(images_query, (attraction[0],))  # 使用景點的 id 作為參數
@@ -227,11 +227,11 @@ def get_mrt_names_sorted_by_attractions():
         # print(undefined_variable)
         # 查詢資料庫，計算每個捷運站的週邊景點數量
         query = """
-            SELECT mrt.name, COUNT(attraction.id) AS num_attractions
+           SELECT mrt.name, COUNT(attraction.MRT_ID) AS num_attractions
             FROM mrt
-            LEFT JOIN attraction ON mrt.id = attraction.MRT_ID
-            GROUP BY mrt.name
-            ORDER BY num_attractions DESC
+            INNER JOIN attraction ON mrt.id = attraction.MRT_ID
+            GROUP BY mrt.id
+            ORDER BY num_attractions DESC;	
         """
         cursor.execute(query)
         mrt_rows = cursor.fetchall()
