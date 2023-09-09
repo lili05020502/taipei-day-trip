@@ -3,6 +3,11 @@ app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
 app.json.ensure_ascii = False
+from flask_cors import CORS   # 导入 CORS
+app = Flask(__name__, 
+            static_folder="public"
+        )
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 #####
 from flask import Flask, request, jsonify,Response
 import mysql.connector
@@ -91,11 +96,11 @@ def get_attractions():
             attraction_params = (f"%{keyword}%",)
         
             # 使用 OR 運算符結合兩個條件
-            query = "SELECT attraction.id, attraction.name, attraction.CAT, attraction.description, attraction.address, attraction.direction, mrt.name, attraction.latitude, attraction.longitude FROM attraction INNER JOIN mrt ON attraction.MRT_ID = mrt.id WHERE {} OR {} LIMIT %s, 12".format(mrt_query, attraction_query)
+            query = "SELECT attraction.id, attraction.name, attraction.CAT, attraction.description, attraction.address, attraction.direction, mrt.name, attraction.latitude, attraction.longitude FROM attraction INNER JOIN mrt ON attraction.MRT_ID = mrt.id WHERE {} OR {}  ORDER BY attraction.id LIMIT %s, 12".format(mrt_query, attraction_query)
             params = (*mrt_params, *attraction_params, start_index)
 
         else:
-            query = "SELECT attraction.id, attraction.name, attraction.CAT, attraction.description, attraction.address, attraction.direction, mrt.name, attraction.latitude, attraction.longitude FROM attraction INNER JOIN mrt ON attraction.MRT_ID = mrt.id LIMIT %s, 12"
+            query = "SELECT attraction.id, attraction.name, attraction.CAT, attraction.description, attraction.address, attraction.direction, mrt.name, attraction.latitude, attraction.longitude FROM attraction INNER JOIN mrt ON attraction.MRT_ID = mrt.id   ORDER BY attraction.id  LIMIT %s, 12"
             params = (start_index,)
             # print(query)
         cursor.execute(query, params)
@@ -217,6 +222,7 @@ def get_attraction_by_id(attractionId):
             "error": True,
             "message": error_message
         }
+        print(error_response)
         return jsonify(error_response), 500
 
 
