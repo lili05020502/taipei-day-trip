@@ -1,5 +1,5 @@
 const pathname = window.location.pathname;
-const attractionId = pathname.split('/').pop(); // 假設 URL 格式為 /attraction/{attractionId}
+const attractionId = pathname.split('/').pop(); 
 const apiUrl = `/api/attraction/${attractionId}`;
 console.log(apiUrl);
 //這段沒有處理意外的景點id

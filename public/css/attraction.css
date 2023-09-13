@@ -494,6 +494,7 @@ footer p {
     .att-img-order-container {
         flex-wrap: wrap;
         padding: 0;
+        margin-top: 0;
     }
 
     .img-container {
