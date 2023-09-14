@@ -70,8 +70,14 @@ async function fetchAttracionData() {
     // imageCount = images.length;
     console.log("imageCount:", imageCount);
     creatimgdot(imageCount);
+    preloadImages(images);
 
-
+    function preloadImages(imagesArray) {
+        for (const imageUrl of imagesArray) {
+          const img = new Image();
+          img.src = imageUrl;
+        }
+      }
 
     function prevImage() {
         currentImageIndex--;
