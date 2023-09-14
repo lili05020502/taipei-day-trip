@@ -6,10 +6,18 @@ body {
     padding: 0%;
     margin: 0%;
 }
-
+a{
+    text-decoration: none;
+}
 nav {
+    position: fixed;
+    /* 固定在頂部 */
+    top: 0;
+    /* 距離頂部0 */
+    z-index: 1000;
+    background-color: white;
     display: flex;
-    /* width: 100%; */
+    width: 100%;
     height: 54px;
     /* padding: 10px 360px; */
     justify-content: center;
@@ -88,6 +96,7 @@ nav {
 .welcome {
     /* border: 1px solid black; */
     /* width: 100%; */
+    margin-top: 54px;
     height: 320px;
     /* flex-shrink: 0; */
     background: url(/public/pic/welcome.png), lightgray 50% / cover no-repeat;
@@ -169,6 +178,12 @@ nav {
     padding: 15px;
     box-sizing: border-box;
     box-shadow: 0px 0px 20px 0px #ABC;
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 13.3px;
+    color:var(--secondary-color-gray-50, #757575);
 }
 
 .search input::placeholder {
@@ -271,14 +286,17 @@ main {
     padding: 5px 15px;
     align-items: flex-start;
     gap: 4px;
+    cursor: pointer;
 }
-.attractions-container{
+
+.attractions-container {
     /* border: 1px solid red; */
     display: flex;
     justify-content: center;
     /* width: 1200px; */
     /* padding: 15px; */
 }
+
 .attractions {
     /* border: 1px solid peru; */
     /* background-color: yellow; */
@@ -288,31 +306,12 @@ main {
     /* padding-top: 15px;
     padding-bottom: 15px; */
     padding: 15px;
-    justify-content:space-between ;
+    justify-content: space-between;
     gap: 25px;
     align-items: center;
     /* flex: 1 0 0; */
     box-sizing: border-box;
 }
-
-.attractions-group {
-    /* border: 1px solid hotpink; */
-    /* background-color: #489; */
-    /* width: 1170px;
-    height: 786px;
-    flex-shrink: 0;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 25px;
-    margin-bottom: 25px; */
-
-}
-
-/* .attractions-group::after {
-    content: "";
-    flex-grow: 1;
-} */
 
 .attraction {
     border: 1px solid var(--secondary-color-gray-20, #E8E8E8);
@@ -324,6 +323,7 @@ main {
     margin: 0px;
     border: 1px solid #e8e8e8;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 .att-img {
@@ -355,18 +355,13 @@ main {
     padding: 10px; */
     position: absolute;
     bottom: 0;
-    /* 放在最下方 */
     left: 0;
     right: 0;
     background: rgba(0, 0, 0, 0.5);
-    /*背景颜色*/
     color: #fff;
-    /* 文字颜色 */
     padding: 5px 10px;
-    /* 可选的内边距，根据需要调整 */
     margin: 0px;
     height: 40px;
-    /* width: 100%; */
     line-height: 2.5;
     font-family: Noto Sans TC;
     font-size: 16px;
@@ -432,7 +427,7 @@ footer p {
 
     }
 
-    .mrt-list-bar{
+    .mrt-list-bar {
         width: 100%;
 
     }
@@ -443,41 +438,51 @@ footer p {
         row-gap: 30px;
     }
 
-    .attraction{
-
-        width: 30%;
+    .attraction {
+        height: auto;
+        width: 47.5%;
     }
-    
+    .att-img{
+        aspect-ratio: 4/3;
+        height: auto;
+    }
 }
 
 @media (max-width:600px) {
     .search input {
-        width:230px ;
+        width: 230px;
     }
 
-    .attractions{
-        /* display: block; */
+    .attractions {
+        display: block;
     }
-    .attraction{
-        width: 46%;
+
+    .attraction {
+        /* width: 46%; */
         /* height: 235px; */
+        width: 100%;
+        height: auto;
+        margin-bottom: 10px;
+    }
+    .att-img{
+        height: auto;
     }
 }
 
 
 @media (max-width:360px) {
     .search input {
-        width:230px ;
+        width: 230px;
     }
 
-    .attractions{
+    .attractions {
         display: block;
         /* row-gap: 15px; */
         /* margin-bottom: 15px; */
     }
-    .attraction{
+
+    .attraction {
         width: 100%;
         /* height: 235px; */
     }
 }
-

@@ -27,20 +27,20 @@ async function searchAttractionsByKeyword(keyword) {
 // ----------------------------------------------
 function listenmrtlist() {
     mrtnamecontainer.forEach((mrt) => {
-      const attraction = mrt.textContent;
-      const input = document.querySelector("#search-input");
-      mrt.addEventListener("click", async () => {
-        input.value = attraction;
-        console.log(`${attraction}`);
-        const response = await fetch(
-          `http://52.25.153.68:3000/api/attractions?page=0&keyword=${attraction}`
-        );
-        const data = await response.json();
-        removeattractions();
-        createAttractionContainer(data);
-      });
+        const attraction = mrt.textContent;
+        const input = document.querySelector("#search-input");
+        mrt.addEventListener("click", async () => {
+            input.value = attraction;
+            console.log(`${attraction}`);
+            const response = await fetch(
+                `http://52.25.153.68:3000/api/attractions?page=0&keyword=${attraction}`
+            );
+            const data = await response.json();
+            removeattractions();
+            createAttractionContainer(data);
+        });
     });
-  }
+}
 
 
 // ---------------------捷運站上下頁功能
@@ -60,7 +60,7 @@ function scrollToNextPage() {
 // 滾動到上一頁
 function scrollToPreviousPage() {
     // 計算上一頁的位置
-    const previousScrollLeft = mrtList.scrollLeft - pageWidth;
+    const previousScrollLeft = mrtList.scrollLeft - pageWidth ;
     // 设置滚动位置
     mrtList.scrollLeft = previousScrollLeft;
 }
@@ -92,10 +92,10 @@ function observeListItem(nextPage, keyword) {
     const attraction = document.querySelectorAll(".attraction");
     const observer = new IntersectionObserver((entries) => {
         let observed = entries[0].isIntersecting;
-        console.log(`NextPage = ${nextPage}, keyword = ${keyword}` );
+        console.log(`NextPage = ${nextPage}, keyword = ${keyword}`);
         if (observed) {
             observer.unobserve(entries[0].target);
-        if (nextPage) {
+            if (nextPage) {
                 next_page_Loading(nextPage, keyword);
             } else {
                 // console.log("沒了");
@@ -197,28 +197,44 @@ function createAttractionContainer(data, keyword) {
     const attractionsArray = Array.isArray(data) ? data : data.data;
     const attractionsContainer = document.querySelector(".attractions");
     attractionsArray.forEach((attraction) => {
-    const attractionElement = document.createElement("div");
-    attractionElement.classList.add("attraction");
-    const imageAndNameDiv = document.createElement("div");
-    imageAndNameDiv.classList.add("att-img");
-    imageAndNameDiv.innerHTML = `
+        const attractionElement = document.createElement("div");
+        attractionElement.classList.add("attraction");
+        attractionElement.setAttribute("data-id", `${attraction.id}`);
+        // --
+        const atag =document.createElement("a");
+        atag.setAttribute("href", `/attraction/${attraction.id}`);
+        console.log(`/attraction/${attraction.id}`);
+        const imageAndNameDiv = document.createElement("div");
+        imageAndNameDiv.classList.add("att-img");
+        imageAndNameDiv.innerHTML = `
             <img src="${attraction.images[0]}" alt="${attraction.name}">
             <p>${attraction.name}</p>
         `;
-    const mrtAndCategoryDiv = document.createElement("div");
-    mrtAndCategoryDiv.classList.add("att-detail");
-    mrtAndCategoryDiv.innerHTML = `
+        const mrtAndCategoryDiv = document.createElement("div");
+        mrtAndCategoryDiv.classList.add("att-detail");
+        mrtAndCategoryDiv.innerHTML = `
             <p>${attraction.mrt || ""}</p> 
             <p>${attraction.category}</p>
         `;
-    attractionElement.appendChild(imageAndNameDiv);
-    attractionElement.appendChild(mrtAndCategoryDiv);
-    attractionsContainer.appendChild(attractionElement);
+        attractionElement.appendChild(atag);
+        attractionElement.appendChild(imageAndNameDiv);
+        attractionElement.appendChild(mrtAndCategoryDiv);
+        attractionsContainer.appendChild(attractionElement);
 
     });
     console.log(`make Attractions: keyword = ${keyword}`);
     observeListItem(attnextpage, keyword);
+
+    document.querySelectorAll(".attraction").forEach((element) => {
+        element.addEventListener("click", function() {
+            const attractionId = this.getAttribute("data-id");
+            const detailPageUrl = `/attraction/${attractionId}`;
+            window.location.href = detailPageUrl;
+        });
+    });
 }
+
+
 
 window.addEventListener("load", async () => {
     fetchData();

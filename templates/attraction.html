@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台北一日遊</title>
+    <link rel="stylesheet" type="text/css" href="/public/css/attraction.css">
+</head>
+
+<body>
+    <nav>
+        <div class="nav-bar">
+            <div class="nav-title">
+                <a href="/">
+                    <p>台北一日遊</p>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <div class="nav-menu-item">
+                    <p>預定行程</p>
+                </div>
+                <div class="nav-menu-item">
+                    <p>登入/註冊</p>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <main>
+
+        <div class="att-img-order-container">
+            <div class="img-container">
+                <div class="img">
+                    <img src="" alt="att-img">
+                </div>
+                <div class="arrow">
+                    <div class="img-left-arrow"></div>
+                    <div class="img-right-arrow"></div>
+                </div>
+                <div class="img-dot">
+
+                </div>
+            </div>
+            <div class="order-container">
+                <h2 class="order-container-h2"></h2>
+                <p id="cat-mrt">
+                    <span class="category order-container-span"></span>
+                    at
+                    <span class="mrt order-container-span"></span>
+                </p>
+
+                <form action="" id="order-form">
+                    <p class="fw700  order-form-p">訂購導覽行程</p>
+                    <p class="fw500  order-form-p">以此景點為中心的一日行程，帶您探索城市角落故事</p>
+                    <div class="order-date-container">
+                        <label for="date">選擇日期:    </label><input type="date" id="date" class="order-date-container-input">
+                    </div>
+                    <div class="order-time-container">
+                        <p class="order-time-container-p">選擇時間:</p>
+                        <input type="radio" class="time-select" id="morning" name="time" checked>
+                        <label for="morning" class="fw500">上半天</label>
+                        <input type="radio" class="time-select" id="afternoon" name="time" />
+                        <label for="afternoon" class="fw500">下半天</label>
+                    </div>
+                    <div class="order-cost">
+                        <p class="fw700 order-cost-p">導覽費用:新台幣<span class="fw500" id="cost">2000</span>元</p>
+                    </div>
+                    <button>開始預約行程</button>
+                </form>
+            </div>
+        </div>
+        <div class="attration-intro-container">
+            <div class="att-description">
+                <p class="att-description-p"></p>
+            </div>
+            <div class="address">
+                <p class="intro-title">景點地址:</p>
+                <p class="att-address"></p>
+            </div>
+            <div class="transport">
+                <p class="intro-title">交通方式:</p>
+                <p class="att-transport"></p>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>COPYRIGHT © 2021 台北一日遊</p>
+    </footer>
+</body>
+<script src="/public/js/attraction.js"></script>
+
+</html>
