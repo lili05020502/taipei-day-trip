@@ -1,17 +1,20 @@
 from flask import *
+from flask_cors import CORS 
+from flask import Flask, request, jsonify,Response
+import mysql.connector
+import jwt
+from datetime import datetime, timedelta
+from mysql.connector import pooling
+
 app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
 app.json.ensure_ascii = False
-from flask_cors import CORS   # 导入 CORS
+#####
 app = Flask(__name__, 
             static_folder="public"
         )
 CORS(app, resources={r"/api/*": {"origins": "*"}})
-#####
-from flask import Flask, request, jsonify,Response
-import mysql.connector
-
 # 連接到 MySQL 資料庫
 db_connection = mysql.connector.connect(
     host="localhost",
@@ -20,7 +23,7 @@ db_connection = mysql.connector.connect(
     database="webdb"
 )
 # 創建資料庫游標
-cursor = db_connection.cursor()
+# cursor = db_connection.cursor()
 
 #####
 # Pages
@@ -72,6 +75,7 @@ def get_attractions():
         else:
             count_query = "SELECT COUNT(*) FROM attraction"
             count_params = ()
+        cursor = db_connection.cursor()
         cursor.execute(count_query, count_params)
         total_records = cursor.fetchone()[0]
         # print("total_records:",total_records)
@@ -138,7 +142,7 @@ def get_attractions():
         
         # 使用 json.dumps 轉換 JSON 物件為 JSON 字串
         response_json = json.dumps(response_data, ensure_ascii=False)
-        
+        cursor.close()
         # 回傳 JSON 字串
         return response_json
 
@@ -157,6 +161,7 @@ def get_attraction_by_id(attractionId):
     try:
         # 根據景點編號查詢資料庫，取得該景點的資料
         query = "SELECT attraction.id, attraction.name, attraction.CAT, attraction.description, attraction.address, attraction.direction, mrt.name, attraction.latitude, attraction.longitude FROM attraction INNER JOIN mrt ON attraction.MRT_ID = mrt.id WHERE attraction.id = %s"
+        cursor = db_connection.cursor()
         cursor.execute(query, (attractionId,))
         attraction = cursor.fetchone()
         # print(undefined_variable)
@@ -213,8 +218,9 @@ def get_attraction_by_id(attractionId):
         
         # # 回傳 JSON 字串
         # return response_json
+        cursor.close()
         return jsonify(response_data)
-    
+        
     except Exception as e:
         # 捕捉其他例外錯誤
         error_message = "伺服器內部錯誤：" + str(e)
@@ -239,6 +245,7 @@ def get_mrt_names_sorted_by_attractions():
             GROUP BY mrt.name
             ORDER BY num_attractions DESC;	
         """
+        cursor = db_connection.cursor()
         cursor.execute(query)
         mrt_rows = cursor.fetchall()
         
@@ -249,6 +256,7 @@ def get_mrt_names_sorted_by_attractions():
         response_data = {
             "data": mrt_names_list
         }
+        cursor.close()
         return jsonify(response_data)
     except Exception as e:
         error_message = "伺服器內部錯誤：" + str(e)
@@ -260,10 +268,107 @@ def get_mrt_names_sorted_by_attractions():
 
 
 
+@app.route("/api/user", methods=["POST"])
+def signup():
+    cursor = db_connection.cursor()
+    # data = request.data
+    user = request.get_json()
+    print("user:",user)
+    # if 'name' not in user or 'email' not in user or 'password' not in user:
+    #         return jsonify({"error": True, "message": "請填寫完整資訊"}), 400
+
+    inputName = user["name"]
+    inputEmail = user["email"]
+    inputPassword = user["password"]
+    
+    # cursor.execute("SELECT name,email,password FROM members WHERE email= %s", (inputEmail,))
+    cursor.execute("SELECT email FROM members WHERE email= %s", (inputEmail,))
+    result=cursor.fetchone()
+    print("result",result)
+    try:
+        if result is not None:
+            print("email已經註冊帳戶")
+            error_message ="email已經註冊帳戶"
+            error_response = {
+                "error": True,
+                "message": error_message
+            }
+            return jsonify(error_response), 400
+            
+        else:
+            print('註冊成功')
+            cursor.execute("INSERT INTO members(name,email,password) VALUES(%s, %s , %s)", (inputName,inputEmail,inputPassword))
+            db_connection.commit()
+            return jsonify({ "ok":True }) ,200 
+    except Exception as e:
+        # return {"error": True, "message": str(e)}
+        return jsonify({"error": True, "message": str(e)}), 500
+    finally:
+        # print('finally')
+        cursor.close()
 
 
 
+@app.route('/api/user/auth', methods=['PUT'])
+def userLogin():
+    key="qqqqqqqaz"
+    cursor = db_connection.cursor()
+    user = request.get_json()
+    inputEmail = user["email"]
+    inputPassword = user["password"]
+    print("inputEmail:",inputEmail)
+    print("inputPassword:",inputPassword)
+    cursor.execute("SELECT id,name,email,password FROM members WHERE  email=%s and password=%s;", (inputEmail, inputPassword))
+    result = cursor.fetchone()
+    print("result",result)
+    try:
+        if result is not None:
+            print("result is not None")
+            print("result:",result)
+            exptime = datetime.now() + timedelta(days=7)
+            exp_timestemp = exptime.timestamp()
+            payload = {
+                'id': result[0],
+                'name': result[1],
+                'email': result[2],
+                'exp': exp_timestemp,
+            }
+            token = jwt.encode(payload=payload, key=key, algorithm="HS256")
 
+            response =jsonify({"token": token}), 200
+            print("token:",token)
+            print("response:",response)
+            return response
+        else:
+            print("登入失敗")
+            return jsonify({"error": True, "message": "帳號或密碼輸入錯誤"}), 400
+    except Exception as e:
+        return {"error": True, "message": str(e)}
+    finally:
+        cursor.close()
 
+@app.route('/api/user/auth', methods=['GET'])
+def getusersData():
+    key="qqqqqqqaz"
+    auth_header = request.headers.get("Authorization", None)
+    try:
+        if (not auth_header):
+            print("未登入的狀態")
+            return jsonify({"data": None}), 200
+
+        token = auth_header.split(" ")[1]
+        print("已登入的狀態")
+        payload=jwt.decode(token, key, algorithms="HS256")
+        user_info = {
+            "id": payload["id"],
+            "name": payload["name"],
+            "email": payload["email"]
+        }
+        print("user_info:",user_info)
+        print("payload:",payload)
+        return jsonify({"data": user_info}), 200
+
+    except Exception as e:
+        return {"error": True, "message": str(e)}
 
 app.run(host="0.0.0.0", port=3000)

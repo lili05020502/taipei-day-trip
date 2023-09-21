@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>台北一日遊</title>
     <link rel="stylesheet" type="text/css" href="/public/css/attraction.css">
+    <link rel="stylesheet" type="text/css" href="/public/css/header.css">
 </head>
 
 <body>
@@ -21,7 +22,7 @@
                     <p>預定行程</p>
                 </div>
                 <div class="nav-menu-item">
-                    <p>登入/註冊</p>
+                    <p id="show-login-button">登入/註冊</p>
                 </div>
             </div>
         </div>
@@ -29,6 +30,33 @@
     <main>
 
         <div class="att-img-order-container">
+            <div id="login-form" class="login-form">
+                <div class="login-form-nav">
+                    <p class="login-form-title">登入會員帳號</p>
+                    <div id="close-login"><img src="/public/pic/icon_close.png"></div>
+                </div>
+                <form class="login-form-form">
+                    <input type="email" id="login-form-input-email" class="login-form-input-email" placeholder="輸入電子郵件" required>
+                    <input type="password" id="login-form-input-password" class="login-form-input-password" placeholder="輸入密碼" required>
+                    <button id="login-form-button"class="login-form-button">登入帳戶</button>
+                </form>
+                <p id="login-message" class="login-message"></p>
+                <div class="login-form-bottom-p"><p class="login-form-p">還沒有帳戶?</p><p class="login-form-register">點此註冊</p></div>
+            </div>
+            <div id="register-form" class="register-form">
+                <div class="register-form-nav">
+                    <p class="register-form-title">註冊會員帳號</p>
+                    <div id="close-register"><img src="/public/pic/icon_close.png"></div>
+                </div>
+                <form class="register-form-form">
+                    <input type="text" id="register-form-input-name" class="register-form-input-name" placeholder="輸入姓名" required>
+                    <input type="email" id="register-form-input-email" class="register-form-input-email" placeholder="輸入電子郵件" required >
+                    <input type="password" id="register-form-input-password" class="register-form-input-password" placeholder="輸入密碼" required>
+                    <button id="register-form-button"  class="register-form-button">註冊新帳戶</button>
+                </form>
+                <p id="register-message" class="register-message"></p>
+                <div class="register-form-bottom-p"><p class="register-form-p">已經有帳戶了?</p><p class="register-form-login">點此登入</p></div>
+            </div>
             <div class="img-container">
                 <div class="img">
                     <img src="" alt="att-img">
@@ -87,6 +115,7 @@
         <p>COPYRIGHT © 2021 台北一日遊</p>
     </footer>
 </body>
+<script src="/public/js/header.js"></script>
 <script src="/public/js/attraction.js"></script>
 
 </html>
