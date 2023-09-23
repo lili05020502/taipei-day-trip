@@ -60,7 +60,7 @@ function scrollToNextPage() {
 // 滾動到上一頁
 function scrollToPreviousPage() {
     // 計算上一頁的位置
-    const previousScrollLeft = mrtList.scrollLeft - pageWidth ;
+    const previousScrollLeft = mrtList.scrollLeft - pageWidth;
     // 设置滚动位置
     mrtList.scrollLeft = previousScrollLeft;
 }
@@ -201,7 +201,7 @@ function createAttractionContainer(data, keyword) {
         attractionElement.classList.add("attraction");
         attractionElement.setAttribute("data-id", `${attraction.id}`);
         // --
-        const atag =document.createElement("a");
+        const atag = document.createElement("a");
         atag.setAttribute("href", `/attraction/${attraction.id}`);
         console.log(`/attraction/${attraction.id}`);
         const imageAndNameDiv = document.createElement("div");
@@ -226,7 +226,7 @@ function createAttractionContainer(data, keyword) {
     observeListItem(attnextpage, keyword);
 
     document.querySelectorAll(".attraction").forEach((element) => {
-        element.addEventListener("click", function() {
+        element.addEventListener("click", function () {
             const attractionId = this.getAttribute("data-id");
             const detailPageUrl = `/attraction/${attractionId}`;
             window.location.href = detailPageUrl;

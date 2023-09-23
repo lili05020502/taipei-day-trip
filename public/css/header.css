@@ -1,0 +1,339 @@
+#show-login-button{
+    cursor: pointer;
+}
+.login-form {
+    display: none;
+    flex-wrap: wrap;
+    /* border: 1px solid gray; */
+    width: 340px;
+    height: 275px;
+    position: fixed;
+    top: 215px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 15px;
+    z-index: 9999;
+    box-sizing: border-box;
+    border-top: 10px solid;
+    border-image: linear-gradient(270deg, #378 0%, #6AB 100%) 1;
+    /* gap: 10px; */
+    border-radius: 6px;
+    background: var(--White, #FFF);
+    box-shadow: 0px 4px 60px 0px #AAA;
+    justify-content: center;
+}
+
+.login-form-nav {
+    width: 100%;
+    height: 27px;
+    display: flex;
+    /* border: 1px solid blue; */
+    justify-content: center;
+}
+
+#close-login {
+    top: 18px;
+    position: absolute;
+    right: 16px;
+    cursor: pointer;
+}
+
+.login-form-title {
+    color: var(--secondary-color-gray-70, #666);
+    text-align: center;
+    font-family: Noto Sans TC;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+    margin: 0;
+
+}
+
+.login-form-form {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 5px;
+}
+
+
+
+.login-form-input-email {
+    border-radius: 5px;
+    border: 1px solid var(--Gray-500, #CCC);
+    background: var(--White, #FFF);
+    width: 100%;
+    height: 17px;
+    padding: 15px;
+    color: var(--secondary-color-gray-50, #757575);
+
+    /* Body - Med 16(13.3) */
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 13.3px;
+    /* 83.125% */
+}
+
+.login-form-input-password {
+    border-radius: 5px;
+    border: 1px solid var(--Gray-500, #CCC);
+    background: var(--White, #FFF);
+    width: 100%;
+    height: 17px;
+    padding: 15px;
+    color: var(--secondary-color-gray-50, #757575);
+
+    /* Body - Med 16(13.3) */
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 13.3px;
+    /* 83.125% */
+}
+
+.login-form-button {
+    width: 100%;
+    border-radius: 5px;
+    background: var(--primary-color-cyan-70, #489);
+    padding: 10px 20px;
+    color: var(--additional-color-white, #FFF);
+    text-align: center;
+
+    /* Button - Reg 19(16) */
+    font-family: Noto Sans TC;
+    font-size: 19px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    /* 84.211% */
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    border: 1px solid #489;
+    cursor: pointer;
+}
+
+.login-form-bottom-p {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.login-message {
+    margin: 0;
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 13.3px;
+}
+
+.login-form-p {
+    margin: 0;
+    color: var(--secondary-color-gray-70, #666);
+    text-align: center;
+
+    /* Body - Med 16(13.3) */
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 13.3px;
+    /* 83.125% */
+}
+
+.login-form-register {
+    margin: 0;
+    color: var(--secondary-color-gray-70, #666);
+    text-align: center;
+
+    /* Body - Med 16(13.3) */
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 13.3px;
+    /* 83.125% */
+    cursor: pointer;
+}
+
+.register-form {
+    display: none;
+    flex-wrap: wrap;
+    /* border: 1px solid gray; */
+    width: 340px;
+    height: 332px;
+    position: fixed;
+    top: 245px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 15px;
+    z-index: 9999;
+    box-sizing: border-box;
+    border-top: 10px solid;
+    border-image: linear-gradient(270deg, #378 0%, #6AB 100%) 1;
+    /* gap: 10px; */
+    border-radius: 6px;
+    background: var(--White, #FFF);
+    box-shadow: 0px 4px 60px 0px #AAA;
+    justify-content: center;
+}
+
+.register-form-nav {
+    width: 100%;
+    height: 27px;
+    display: flex;
+    /* border: 1px solid blue; */
+    justify-content: center;
+}
+
+.register-form-title {
+    color: var(--secondary-color-gray-70, #666);
+    text-align: center;
+    font-family: Noto Sans TC;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+    margin: 0;
+
+}
+
+#close-register {
+    top: 18px;
+    position: absolute;
+    right: 16px;
+    cursor: pointer;
+}
+
+.register-form-form {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 5px;
+}
+
+.register-form-input-name {
+    border-radius: 5px;
+    border: 1px solid var(--Gray-500, #CCC);
+    background: var(--White, #FFF);
+    width: 100%;
+    height: 17px;
+    padding: 15px;
+    color: var(--secondary-color-gray-50, #757575);
+
+    /* Body - Med 16(13.3) */
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 13.3px;
+    /* 83.125% */
+}
+
+.register-form-input-email {
+    border-radius: 5px;
+    border: 1px solid var(--Gray-500, #CCC);
+    background: var(--White, #FFF);
+    width: 100%;
+    height: 17px;
+    padding: 15px;
+    color: var(--secondary-color-gray-50, #757575);
+
+    /* Body - Med 16(13.3) */
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 13.3px;
+    /* 83.125% */
+}
+
+.register-form-input-password {
+    border-radius: 5px;
+    border: 1px solid var(--Gray-500, #CCC);
+    background: var(--White, #FFF);
+    width: 100%;
+    height: 17px;
+    padding: 15px;
+    color: var(--secondary-color-gray-50, #757575);
+
+    /* Body - Med 16(13.3) */
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 13.3px;
+    /* 83.125% */
+}
+
+.register-form-button {
+    width: 100%;
+    border-radius: 5px;
+    background: var(--primary-color-cyan-70, #489);
+    padding: 10px 20px;
+    color: var(--additional-color-white, #FFF);
+    text-align: center;
+
+    /* Button - Reg 19(16) */
+    font-family: Noto Sans TC;
+    font-size: 19px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    /* 84.211% */
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    border: 1px solid #489;
+    cursor: pointer;
+}
+
+.register-form-bottom-p {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.register-message {
+    margin: 0;
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 13.3px;
+}
+
+.register-form-p {
+    margin: 0;
+    color: var(--secondary-color-gray-70, #666);
+    text-align: center;
+
+    /* Body - Med 16(13.3) */
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 13.3px;
+    /* 83.125% */
+}
+
+.register-form-login {
+    margin: 0;
+    color: var(--secondary-color-gray-70, #666);
+    text-align: center;
+
+    /* Body - Med 16(13.3) */
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 13.3px;
+    /* 83.125% */
+    cursor: pointer;
+}

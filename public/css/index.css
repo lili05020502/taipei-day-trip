@@ -6,9 +6,11 @@ body {
     padding: 0%;
     margin: 0%;
 }
-a{
+
+a {
     text-decoration: none;
 }
+
 nav {
     position: fixed;
     /* 固定在頂部 */
@@ -90,7 +92,7 @@ nav {
     line-height: 13.3px;
     /* 83.125% */
     ;
-
+    cursor: pointer;
 }
 
 .welcome {
@@ -183,7 +185,7 @@ nav {
     font-style: normal;
     font-weight: 700;
     line-height: 13.3px;
-    color:var(--secondary-color-gray-50, #757575);
+    color: var(--secondary-color-gray-50, #757575);
 }
 
 .search input::placeholder {
@@ -212,6 +214,7 @@ nav {
     border-bottom-right-radius: 5px;
     cursor: pointer;
 }
+
 
 main {
     /* border: 1px solid gray; */
@@ -442,7 +445,8 @@ footer p {
         height: auto;
         width: 47.5%;
     }
-    .att-img{
+
+    .att-img {
         aspect-ratio: 4/3;
         height: auto;
     }
@@ -464,7 +468,8 @@ footer p {
         height: auto;
         margin-bottom: 10px;
     }
-    .att-img{
+
+    .att-img {
         height: auto;
     }
 }
