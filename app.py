@@ -1,31 +1,42 @@
 from flask import *
 from flask_cors import CORS 
-from flask import Flask, request, jsonify,Response
 import mysql.connector
 import jwt
 from datetime import datetime, timedelta
 from mysql.connector import pooling
 
-app=Flask(__name__)
+app = Flask(__name__, 
+            static_folder="public"
+        )
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
 app.json.ensure_ascii = False
 #####
-app = Flask(__name__, 
-            static_folder="public"
-        )
+
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 # 連接到 MySQL 資料庫
-db_connection = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="1234",
-    database="webdb"
-)
+# db_connection = mysql.connector.connect(
+#     host="localhost",
+#     user="root",
+#     password="1234",
+#     database="webdb"
+# )
 # 創建資料庫游標
 # cursor = db_connection.cursor()
 
 #####
+dbconfig = {
+    'host': 'localhost',
+    'user': 'root',
+    'password': '1234',
+    'database': 'webdb'
+}
+
+cnxpool = pooling.MySQLConnectionPool(
+    pool_name="mypool",
+    pool_size=10, 
+    **dbconfig
+)
 # Pages
 @app.route("/")
 def index():
@@ -44,7 +55,9 @@ def thankyou():
 # API - 取得景點資料列表
 @app.route("/api/attractions", methods=["GET"])
 def get_attractions():
-    try:    
+    try:
+        cnx = cnxpool.get_connection()
+        cursor = cnx.cursor()    
         page = int(request.args.get("page", 0))
         keyword = request.args.get("keyword", None)
 
@@ -75,7 +88,7 @@ def get_attractions():
         else:
             count_query = "SELECT COUNT(*) FROM attraction"
             count_params = ()
-        cursor = db_connection.cursor()
+        # cursor = db_connection.cursor()
         cursor.execute(count_query, count_params)
         total_records = cursor.fetchone()[0]
         # print("total_records:",total_records)
@@ -155,13 +168,18 @@ def get_attractions():
         }
 
         return jsonify(error_response), 500
-
+    finally:
+        # print('finally')
+        cursor.close()
+        cnx.close()
 @app.route("/api/attraction/<int:attractionId>", methods=["GET"])
 def get_attraction_by_id(attractionId):
     try:
+        cnx = cnxpool.get_connection()
+        cursor = cnx.cursor()
         # 根據景點編號查詢資料庫，取得該景點的資料
         query = "SELECT attraction.id, attraction.name, attraction.CAT, attraction.description, attraction.address, attraction.direction, mrt.name, attraction.latitude, attraction.longitude FROM attraction INNER JOIN mrt ON attraction.MRT_ID = mrt.id WHERE attraction.id = %s"
-        cursor = db_connection.cursor()
+        # cursor = db_connection.cursor()
         cursor.execute(query, (attractionId,))
         attraction = cursor.fetchone()
         # print(undefined_variable)
@@ -230,12 +248,16 @@ def get_attraction_by_id(attractionId):
         }
         print(error_response)
         return jsonify(error_response), 500
-
-
+    finally:
+        # print('finally')
+        cursor.close()
+        cnx.close()
 
 @app.route("/api/mrts", methods=["GET"])
 def get_mrt_names_sorted_by_attractions():
     try:
+        cnx = cnxpool.get_connection()
+        cursor = cnx.cursor()
         # print(undefined_variable)
         # 查詢資料庫，計算每個捷運站的週邊景點數量
         query = """
@@ -245,7 +267,7 @@ def get_mrt_names_sorted_by_attractions():
             GROUP BY mrt.name
             ORDER BY num_attractions DESC;	
         """
-        cursor = db_connection.cursor()
+        # cursor = db_connection.cursor()
         cursor.execute(query)
         mrt_rows = cursor.fetchall()
         
@@ -265,12 +287,16 @@ def get_mrt_names_sorted_by_attractions():
             "message": error_message
         }
         return jsonify(error_response), 500
-
-
+    finally:
+        # print('finally')
+        cursor.close()
+        cnx.close()
 
 @app.route("/api/user", methods=["POST"])
 def signup():
-    cursor = db_connection.cursor()
+    cnx = cnxpool.get_connection()
+    cursor = cnx.cursor()
+    # cursor = db_connection.cursor()
     # data = request.data
     user = request.get_json()
     print("user:",user)
@@ -298,7 +324,8 @@ def signup():
         else:
             print('註冊成功')
             cursor.execute("INSERT INTO members(name,email,password) VALUES(%s, %s , %s)", (inputName,inputEmail,inputPassword))
-            db_connection.commit()
+            # db_connection.commit()
+            cnx.commit()
             return jsonify({ "ok":True }) ,200 
     except Exception as e:
         # return {"error": True, "message": str(e)}
@@ -306,13 +333,15 @@ def signup():
     finally:
         # print('finally')
         cursor.close()
-
+        cnx.close()
 
 
 @app.route('/api/user/auth', methods=['PUT'])
 def userLogin():
     key="qqqqqqqaz"
-    cursor = db_connection.cursor()
+    cnx = cnxpool.get_connection()
+    cursor = cnx.cursor()
+    # cursor = db_connection.cursor()
     user = request.get_json()
     inputEmail = user["email"]
     inputPassword = user["password"]
@@ -346,6 +375,7 @@ def userLogin():
         return {"error": True, "message": str(e)}
     finally:
         cursor.close()
+        cnx.close()
 
 @app.route('/api/user/auth', methods=['GET'])
 def getusersData():
