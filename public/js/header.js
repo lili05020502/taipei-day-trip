@@ -1,6 +1,21 @@
 const token = localStorage.getItem("token");
 
 //----------------------
+// booking
+//----------------------
+// const toBookingButton = document.getElementById("booking");
+
+// toBookingButton.addEventListener("click",()=> {
+//     // 使用 window.location.href 來跳轉到 booking.html
+//     window.location.href = "/booking";
+//   });
+
+// function tobooking(){
+//     window.location.href = "/booking";
+// }
+
+
+//----------------------
 // 打開關閉登入註冊
 //----------------------
 const showModalButton = document.getElementById("show-login-button");
@@ -166,6 +181,7 @@ loginBtn.addEventListener("click", async (e) => {
 //----------------------
 // 會員狀態
 //----------------------
+const toBookingButton = document.getElementById("booking");
 userStatus();
 async function userStatus() {
     if (token) {
@@ -183,14 +199,23 @@ async function userStatus() {
         userData = data["data"];
     }
     if (userData) {
-        console.log(userData);
+        console.log("userData",userData);
         showModalButton.textContent = "登出系統";
         showModalButton.addEventListener("click", () => {
             localStorage.removeItem("token");
             window.location.reload();
         });
+        
+
+        toBookingButton.addEventListener("click", () => {
+            // 使用 window.location.href 來跳轉到 booking
+            window.location.href = "/booking";
+        });
     } else {
         showModalButton.addEventListener("click", () => {
+            loginForm.style.display = "flex";
+        });
+        toBookingButton.addEventListener("click", () => {
             loginForm.style.display = "flex";
         });
     }
