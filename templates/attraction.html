@@ -19,7 +19,7 @@
             </div>
             <div class="nav-menu">
                 <div class="nav-menu-item">
-                    <p>預定行程</p>
+                    <p id="booking">預定行程</p>
                 </div>
                 <div class="nav-menu-item">
                     <p id="show-login-button">登入/註冊</p>
@@ -81,7 +81,7 @@
                     <p class="fw700  order-form-p">訂購導覽行程</p>
                     <p class="fw500  order-form-p">以此景點為中心的一日行程，帶您探索城市角落故事</p>
                     <div class="order-date-container">
-                        <label for="date">選擇日期:    </label><input type="date" id="date" class="order-date-container-input">
+                        <label for="date">選擇日期:    </label><input type="date" id="date" class="order-date-container-input"><span id="date-span"></span>
                     </div>
                     <div class="order-time-container">
                         <p class="order-time-container-p">選擇時間:</p>
@@ -93,7 +93,7 @@
                     <div class="order-cost">
                         <p class="fw700 order-cost-p">導覽費用:新台幣<span class="fw500" id="cost">2000</span>元</p>
                     </div>
-                    <button>開始預約行程</button>
+                    <button id="att-boo-sub-btn">開始預約行程</button>
                 </form>
             </div>
         </div>

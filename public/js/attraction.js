@@ -1,5 +1,5 @@
 const pathname = window.location.pathname;
-const attractionId = pathname.split('/').pop(); 
+const attractionId = pathname.split('/').pop();
 const apiUrl = `/api/attraction/${attractionId}`;
 console.log(apiUrl);
 //這段沒有處理意外的景點id
@@ -74,10 +74,10 @@ async function fetchAttracionData() {
 
     function preloadImages(imagesArray) {
         for (const imageUrl of imagesArray) {
-          const img = new Image();
-          img.src = imageUrl;
+            const img = new Image();
+            img.src = imageUrl;
         }
-      }
+    }
 
     function prevImage() {
         currentImageIndex--;
@@ -139,6 +139,87 @@ function updateImageDot(index) {
         }
     });
 }
+let tripDate = document.getElementById("date");
+tripDate.min = new Date().toISOString().split("T")[0];
+
+const attboosubbtn = document.getElementById("att-boo-sub-btn");
+
+
+
+
+attboosubbtn.addEventListener("click", function (event) {
+    event.preventDefault();
+    if (token == null) {
+        console.log("請先登入");
+        loginForm.style.display = "flex";
+    }
+    else {
+        checkUserLoginStatus()
+        async function checkUserLoginStatus() {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                return false;
+            }
+            if (token) {
+                const response = await fetch("/api/user/auth", {
+                    method: "GET",
+                    headers: {
+                        Authorization: "Bearer " + token,
+                    },
+                });
+                const data = await response.json();
+                console.log("data:", data);
+                userData = data["data"];
+                if ("error" in data) {
+                    console.log("error in data");
+                    loginForm.style.display = "flex";
+                }
+                else if ("data" in data) {
+                    console.log("data in data");
+                    const morning = document.querySelector("#morning");
+                    const afternoon = document.querySelector("#afternoon");
+                    let time;
+                    if (!(tripDate.value)) {
+                        console.log("請選擇日期");
+                        alert("請選擇日期");
+                        return 0;
+                    }
+                    if (morning.checked) {
+                        time = "morning";
+                    } else if (afternoon.checked) {
+                        time = "afternoon";
+                    }
+                    const data = {
+                        attractionId: attractionId,
+                        date: tripDate.value,
+                        time: time,
+                        price: cost.textContent,
+
+                    };
+                    console.log("data:", data);
+                    const response = await fetch("/api/booking", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: "Bearer " + token,
+                        },
+                        body: JSON.stringify(data),
+                    });
+                    const res = await response.json();
+                    if ("ok" in res) {
+                        console.log("res:",res);
+                        console.log("新增booking成功");
+                        window.location.href = "/booking";
+                    }
+                }
+
+            };
+        }
+    }
+})
+
+
+
 
 window.addEventListener("load", async () => {
     fetchAttracionData();
