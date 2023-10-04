@@ -1,0 +1,159 @@
+body {
+    padding: 0%;
+    margin: 0%;
+}
+
+
+main {
+    margin-top: 54px;
+    display: flex;
+    justify-content: center;
+}
+
+
+.login-form {
+    display: none;
+}
+
+.register-form{
+    display: none;
+}
+
+.thankyou-container {
+    /* border: 1px solid black; */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 350px;
+    gap: 30px;
+    margin-bottom: 70px;
+}
+
+.thankyou-title {
+    /* border: 1px solid black; */
+    width: 100%;
+}
+
+.thankyou-title-p {
+    /* border: 1px solid black; */
+    margin: 0;
+    padding: 0;
+    color: var(--secondary-color-gray-70, #666);
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 13.3px;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.order-number-msg {
+    /* border: 1px solid black; */
+    width: 100%;
+}
+
+.order-number {
+    /* border: 1px solid black; */
+    margin: 0;
+    padding: 0;
+    color: var(--secondary-color-gray-70, #666);
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 13.3px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+
+.order-msg {
+    /* border: 1px solid black; */
+    margin: 0;
+    padding: 0;
+    color: var(--secondary-color-gray-70, #666);
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 13.3px;
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+
+.order-detail{
+    display: none;
+    flex-wrap: wrap;
+    /* border: 1px solid black; */
+    width: 100%;
+}
+.order-detail p{
+    margin: 0;
+    padding: 0;
+    color: var(--secondary-color-gray-70, #666);
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    /* line-height: 13.3px; */
+    /* margin-top: 20px; */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+/* #detail-att-name{
+    border: 1px solid black;
+    width: 100%;
+}
+#detail-att-address{
+    border: 1px solid black;
+    width: 100%;
+}
+#detail-date{
+    border: 1px solid black;
+    width: 100%;
+}
+#detail-time{
+    border: 1px solid black;
+    width: 100%;
+}
+#detail-price{
+    border: 1px solid black;
+    width: 100%;
+}
+#detail-pay-status{
+    border: 1px solid black;
+    width: 100%;
+} */
+
+footer {
+    display: flex;
+    background: var(--Gray-700, #757575);
+    padding: 40px;
+    margin: 0px;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+    align-items: flex-start;
+}
+
+footer p {
+    margin: 0px;
+    padding: 0px;
+    color: var(--additional-color-white, #FFF);
+
+    /* Body - Bold 16(13.3) */
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 13.3px;
+    /* 83.125% */
+}

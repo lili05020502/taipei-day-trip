@@ -174,7 +174,8 @@ main {
 
 .booking-box {
     /* border: 1px solid orange; */
-    display: flex;
+    display: none;
+    /* display: flex; */
     padding-bottom: 40px;
     padding-top: 30px;
 }
@@ -310,7 +311,8 @@ main {
 
 .booking-contact-box {
     /* border: 1px solid firebrick; */
-    display: flex;
+    display: none;
+    /* display: flex; */
     padding-bottom: 40px;
     padding-top: 40px;
     border-bottom: 1px solid #E8E8E8;
@@ -491,7 +493,8 @@ main {
 
 .booking-payment-box {
     /* border: 1px solid darkblue; */
-    display: flex;
+    display: none;
+    /* display: flex; */
     padding-bottom: 40px;
     padding-top: 40px;
     border-bottom: 1px solid #E8E8E8;
@@ -523,6 +526,16 @@ main {
     /* 84.211% */
     margin: 0;
 }
+.tpfield {
+    font-size: 16px;
+    width: 200px;
+    height: 38px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid var(--Gray-300, #E8E8E8);
+    background: var(--White, #FFF);
+    box-sizing: border-box;
+  }
 
 .cardNum-input-box {
     /* border: 1px solid rgb(22, 22, 25); */
@@ -635,7 +648,8 @@ main {
     height: 100px;
     padding-bottom: 40px;
     padding-top: 40px;
-    display: flex;
+    display: none;
+    /* display: flex; */
     justify-content: end;
 }
 

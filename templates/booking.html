@@ -108,7 +108,7 @@
                             <label for="ContactuserPhoneInput" class="ContactuserPhone">手機號碼：</label>
                             <input type="tel" id="ContactuserPhoneInput" class="ContactuserPhoneInput"
                                 name="ContactuserPhoneInput" placeholder="輸入手機號碼" size="10" pattern="^09[0-9]{8}$"
-                                required>
+                                 required>
                         </div>
                         <div class="contact-notice">
                             <p class="contact-notice-p">請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</p>
@@ -123,16 +123,19 @@
                     </div>
                     <div class="cardNum-input-box">
                         <label for="cardNum" class="cardNum">卡片號碼：</label>
-                        <input type="text" class="cardNum-input" name="cardNum" id="cardNum"
-                            placeholder="**** **** **** ****">
+                        <div class="tpfield" id="card-number"></div>
+                        <!-- <input type="text" class="cardNum-input" name="cardNum" id="card-number"
+                            placeholder="**** **** **** ****"> -->
                     </div>
                     <div class="cardExp-input-box">
                         <label for="cardExp" class="cardExp">過期時間：</label>
-                        <input type="text" class="cardExp-input" name="cardExp" id="cardExp" placeholder="MM/YY" />
+                        <div class="tpfield" id="card-expiration-date"></div>
+                        <!-- <input type="text" class="cardExp-input" name="cardExp" id="card-expiration-date" placeholder="MM/YY" /> -->
                     </div>
                     <div class="cardCvv-input-box">
                         <label for="cardCvv" class="cardCvv">驗證密碼：</label>
-                        <input type="text" class="cardCvv-input" name="cardCvv" id="cardCvv" placeholder="CVV" />
+                        <div class="tpfield" id="card-ccv"></div>
+                        <!-- <input type="text" class="cardCvv-input" name="cardCvv" id="card-ccv" placeholder="CVV" /> -->
                     </div>
             </div>
             <div class="booking-confirn-box">
@@ -140,7 +143,7 @@
                     <p class="fee-p">總價：新台幣
                         <span class="dollar" id="dollar">2000</span> 元
                     </p>
-                    <button class="confrimBtn">確認訂購並付款</button>
+                    <button class="confrimBtn" id="confrimBtn">確認訂購並付款</button>
                 </div>
 
             </div>
@@ -155,6 +158,8 @@
     </footer>
 </body>
 <script src="/public/js/header.js"></script>
+<script src="https://js.tappaysdk.com/sdk/tpdirect/v5.14.0"></script>
 <script src="/public/js/booking.js"></script>
+
 
 </html>

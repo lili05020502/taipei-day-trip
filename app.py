@@ -2,6 +2,7 @@ from flask import *
 from flask_cors import CORS
 import mysql.connector
 import jwt
+import requests
 from datetime import datetime, timedelta
 from mysql.connector import pooling
 
@@ -400,6 +401,7 @@ def getusersData():
     #     error_response = {"error": True, "message": error_message}
     #     return jsonify(error_response), 500
 
+
 @app.route("/api/booking", methods=["GET"])
 def getBooking():
     key = "qqqqqqqaz"
@@ -415,48 +417,51 @@ def getBooking():
             print("booking_auth_header:", auth_header)
             token = auth_header.split(" ")[1]
             payload = jwt.decode(token, key, algorithms="HS256")
-            memberid=payload["id"]
-            print("booking_get_payload:",payload)
-            
+            memberid = payload["id"]
+            print("booking_get_payload:", payload)
+
             cnx = cnxpool.get_connection()
             cursor = cnx.cursor()
-            sql="SELECT * FROM booking WHERE member_id= %s;"
+            sql = "SELECT * FROM booking WHERE member_id= %s;"
             cursor.execute(sql, (memberid,))
-            result=cursor.fetchone()
-            print ("booking_get_result:",result)
+            result = cursor.fetchone()
+            print("booking_get_result:", result)
             if result == None:
-                    print('沒有訂單資料')
-                    response = jsonify({'data': None}), 200
-                    print("booking_get_result==none:",response)
-                    
-                    return response
+                print("沒有訂單資料")
+                response = jsonify({"data": None}), 200
+                print("booking_get_result==none:", response)
+
+                return response
             # else:
             #     sql="SELECT * FROM booking WHERE member_id= %s;"
             attractionId = result[2]
-            print("attractionId:",attractionId)
-            cursor.execute("SELECT id, name, address FROM attraction WHERE id =%s;", (attractionId,))
-            att=cursor.fetchone()
+            print("attractionId:", attractionId)
+            cursor.execute(
+                "SELECT id, name, address FROM attraction WHERE id =%s;",
+                (attractionId,),
+            )
+            att = cursor.fetchone()
             attraction = {
-                'id': att[0],
-                'name': att[1],
-                'address':att[2],
-                'image':[],
+                "id": att[0],
+                "name": att[1],
+                "address": att[2],
+                "image": [],
             }
-            print("attraction_1:",attraction)
+            print("attraction_1:", attraction)
             images_query = "SELECT images FROM attractionimg WHERE attraction_id = %s"
-            cursor.execute(images_query, (attractionId,)) 
+            cursor.execute(images_query, (attractionId,))
             image_rows = cursor.fetchone()
-            print("image_rows:",image_rows)
-            attraction["image"]= image_rows[0]
-            print("attraction_2:",attraction)
+            print("image_rows:", image_rows)
+            attraction["image"] = image_rows[0]
+            print("attraction_2:", attraction)
             data = {
-                'attraction': attraction,
-                'date': result[3].strftime('%Y-%m-%d'),
-                'time': result[4],
-                'price':int(result[5])
-            }   
-            print("data:",data)
-            response = jsonify({"data":data}), 200
+                "attraction": attraction,
+                "date": result[3].strftime("%Y-%m-%d"),
+                "time": result[4],
+                "price": int(result[5]),
+            }
+            print("data:", data)
+            response = jsonify({"data": data}), 200
             print(response)
             return response
     except Exception as e:
@@ -465,6 +470,7 @@ def getBooking():
     #     error_message = "伺服器內部錯誤：" + str(e)
     #     error_response = {"error": True, "message": error_message}
     #     return jsonify(error_response), 500
+
 
 @app.route("/api/booking", methods=["POST"])
 def creatBooking():
@@ -476,16 +482,16 @@ def creatBooking():
             error_message = "未登入系統，拒絕存取"
             error_response = {"error": True, "message": error_message}
             return jsonify(error_response), 403
-        
-        elif None in bookingdata :
+
+        elif None in bookingdata:
             # print(bookingdata)
             return jsonify({"error": True, "message": "請填寫完整資料"}), 400
-            
+
         else:
             print("已登入存取booking")
             token = auth_header.split(" ")[1]
             payload = jwt.decode(token, key, algorithms="HS256")
-            memberid=payload["id"]
+            memberid = payload["id"]
             # bookingdata = request.get_json()
             attractionId = bookingdata["attractionId"]
             date = bookingdata["date"]
@@ -499,28 +505,26 @@ def creatBooking():
 
             cnx = cnxpool.get_connection()
             cursor = cnx.cursor()
-            sql="SELECT * FROM booking WHERE member_id=%s;"
+            sql = "SELECT * FROM booking WHERE member_id=%s;"
             cursor.execute(sql, (memberid,))
             bookingData = cursor.fetchone()
             # print("bookingData:",bookingData)
             # cursor.execute("SELECT id,name,email,password FROM members WHERE  email=%s and password=%s;",(inputEmail, inputPassword),)
             if bookingData == None:
-                sql="INSERT INTO booking (member_id, attraction_id, date, time, price) VALUES(%s, %s, %s, %s, %s);"
-                val=(memberid, attractionId, date, time, price)
+                sql = "INSERT INTO booking (member_id, attraction_id, date, time, price) VALUES(%s, %s, %s, %s, %s);"
+                val = (memberid, attractionId, date, time, price)
             else:
-                sql="UPDATE booking SET member_id=%s, attraction_id=%s, date=%s, time=%s, price=%s WHERE member_id=%s;"
-                val=(memberid, attractionId, date, time, price, memberid)
+                sql = "UPDATE booking SET member_id=%s, attraction_id=%s, date=%s, time=%s, price=%s WHERE member_id=%s;"
+                val = (memberid, attractionId, date, time, price, memberid)
             cursor.execute(sql, val)
             cnx.commit()
-            response= {
-            "ok": True
-                    }
+            response = {"ok": True}
             # print("booking_post:",response)
 
             return jsonify(response), 200
 
     except Exception as e:
-        return {"error": True, "message":"伺服器內部錯誤"+ str(e)}
+        return {"error": True, "message": "伺服器內部錯誤" + str(e)}
     # except Exception as e:
     #     error_message = "伺服器內部錯誤：" + str(e)
     #     error_response = {"error": True, "message": error_message}
@@ -528,6 +532,7 @@ def creatBooking():
     finally:
         cursor.close()
         cnx.close()
+
 
 @app.route("/api/booking", methods=["DELETE"])
 def deleteBooking():
@@ -542,20 +547,231 @@ def deleteBooking():
             print("這邊1")
             token = auth_header.split(" ")[1]
             payload = jwt.decode(token, key, algorithms="HS256")
-            memberid=payload["id"]
+            memberid = payload["id"]
             print("這邊2")
             cnx = cnxpool.get_connection()
             cursor = cnx.cursor()
-            sql='DELETE FROM booking WHERE member_id= %s;'
-            cursor.execute(sql,(memberid,))
+            sql = "DELETE FROM booking WHERE member_id= %s;"
+            cursor.execute(sql, (memberid,))
             cnx.commit()
             cursor.close()
-            return make_response(jsonify({'ok': True}), 200)
-
-
+            return make_response(jsonify({"ok": True}), 200)
 
     except Exception as e:
-        return {"error": True, "message":"伺服器內部錯誤"+ str(e)}
+        return {"error": True, "message": "伺服器內部錯誤" + str(e)}
+
+
+@app.route("/api/orders", methods=["POST"])
+def createorder():
+    key = "qqqqqqqaz"
+    auth_header = request.headers.get("Authorization", None)
+    try:
+        if not auth_header:
+            error_message = "未登入系統，拒絕存取"
+            error_response = {"error": True, "message": error_message}
+            return jsonify(error_response), 403
+
+        else:
+            print("已登入狀態送order_post到後端")
+            token = auth_header.split(" ")[1]
+            payload = jwt.decode(token, key, algorithms="HS256")
+            memberid = payload["id"]
+            print("memberid:", memberid)
+            memberName = payload["name"]
+
+            order = request.get_json()
+            name = order["order"]["contact"]["name"]
+            email = order["order"]["contact"]["email"]
+            phone = order["order"]["contact"]["phone"]
+            attraction_id = order["order"]["trip"]["attraction"]["id"]
+            attraction_name = order["order"]["trip"]["attraction"]["name"]
+            attraction_address = order["order"]["trip"]["attraction"]["address"]
+            attraction_image = order["order"]["trip"]["attraction"]["image"]
+            date = order["order"]["trip"]["date"]
+            time = order["order"]["trip"]["time"]
+            prime = order["prime"]
+            price = order["order"]["price"]
+            partner_key = (
+                "partner_INxU7lVfFhwaFbSyiJZFGWswKYEv6inHvA7DRmT4s2m315HF5xKv07VS"
+            )
+            merchant_id = "li0502178_CTBC"
+            print("partner_key:", partner_key)
+            print("prime:", order["prime"])
+            print(order)
+            print("attraction_id:", attraction_id)
+            print("date:", date)
+            print("time:", time)
+            print("price:", price)
+            print("name:", name)
+            print("email:", email)
+            print("phone:", phone)
+            current_time = datetime.now()
+            order_number = current_time.strftime("%Y%m%d%H%M%S")
+            print("order_number:", order_number)
+            status = "未付款"
+            cnx = cnxpool.get_connection()
+            cursor = cnx.cursor()
+            sql = """
+                    INSERT INTO orders (
+                        order_number, member_id, attraction_id,  date, time, price,
+                        contact_name, contact_email, contact_phone, status) 
+                    VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                """
+            # sql="INSERT INTO orders (order_number, member_id, attraction_id,  date, time, price,contact_name, contact_email, contact_phone, status) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
+            val = (
+                order_number,
+                memberid,
+                attraction_id,
+                date,
+                time,
+                price,
+                name,
+                email,
+                phone,
+                status,
+            )
+            cursor.execute(sql, val)
+            cnx.commit()
+            # sql ="""
+            #         INSERT INTO orders (
+            #             order_number, member_id, attraction_id,  date, time, price,
+            #             contact_name, contact_email, contact_phone, status)
+            #         VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+            #     """
+            # content = (order_number, memberid, attraction_id, date, time, price, name, email, phone, "未付款")
+            # print(sql)
+            # cursor.execute(sql,content)
+            # cnx.commit()
+            SendToTapPayData = {
+                "prime": prime,
+                "partner_key": partner_key,
+                "merchant_id": "li0502178_CTBC",
+                "details": "TapPay Test",
+                "amount": price,
+                "cardholder": {"phone_number": phone, "name": name, "email": email},
+                "remember": "false",
+            }
+            print(SendToTapPayData)
+            url = "https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime"
+            headers = {"Content-Type": "application/json", "x-api-key": partner_key}
+            response = requests.post(url, headers=headers, json=SendToTapPayData)
+            print("response:", response)
+            print("JSON Response ", response.json())
+            print("status:", response.json()["status"])
+            if response.json()["status"] == 0:
+                print("status是0")
+                status = "已付款"
+                sql = "UPDATE orders SET status=%s WHERE order_number = %s;"
+                val = (status, order_number)
+                # cursor.execute(
+                #         "UPDATE orders SET status=%s WHERE order_number = %s;", (order_number,))
+                cursor.execute(sql, val)
+                cnx.commit()
+
+                response = {
+                    "data": {
+                        "number": order_number,
+                        "payment": {"status": 0, "message": "付款成功"},
+                    }
+                }
+                cursor.execute(
+                        "DELETE FROM booking;")
+                cnx.commit()
+                return jsonify(response), 200
+            else:
+                response={
+                    "error": "true",
+                    "message": "訂單建立失敗，輸入不正確或其他原因"
+                    }
+                return jsonify(response), 400
+            
+
+    except Exception as e:
+        return {"error": True, "message": "伺服器內部錯誤" + str(e)}
+
+    finally:
+        cursor.close()
+        cnx.close()
+@app.route("/api/orders/<orderNumber>", methods=["GET"])
+def getorder(orderNumber):
+    key = "qqqqqqqaz"
+    auth_header = request.headers.get("Authorization", None)
+    print("orderNumber:",orderNumber)
+    try:
+        if not auth_header:
+            error_message = "未登入系統，拒絕存取"
+            error_response = {"error": True, "message": error_message}
+            return jsonify(error_response), 403
+        else:   
+            print("已登入狀態送order_get到後端")
+
+            token = auth_header.split(" ")[1]
+            payload = jwt.decode(token, key, algorithms="HS256")
+            memberid = payload["id"]
+            print("memberid:", memberid)
+            memberName = payload["name"]   
+            cnx = cnxpool.get_connection()
+            cursor = cnx.cursor()
+            sql="SELECT orders.order_number, orders.member_id, orders.attraction_id, orders.date, orders.time, orders.price, orders.contact_name, orders.contact_email, orders.contact_phone, orders.status, attraction.name, attraction.address FROM orders INNER JOIN attraction ON orders.attraction_id = attraction.id WHERE orders.order_number = %s;"
+            val=(orderNumber,) 
+            cursor.execute(sql, val)
+            # cnx.commit()
+            result= cursor.fetchone()
+            if result==None:
+                print("查無此訂單編號")
+                return jsonify(result), 200
+            # print("orderNumber:",orderNumber)
+            # print("result:",result) 
+
+            attraction_Id=result[2]
+            attraction_name=result[10]
+            attraction_address=result[11]
+            order_price=result[5]
+            date=result[3].strftime("%Y-%m-%d")
+            time=result[4]
+            contact_name=result[6]
+            contact_email=result[7]
+            contact_phone=result[8]
+            if result[9]=="已付款":
+                status=1
+            else:
+                status=0    
+            # print("status:",status)
+            
+            
+            images_query = "SELECT images FROM attractionimg WHERE attraction_id = %s"
+            cursor.execute(images_query, (attraction_Id,))
+            image_rows = cursor.fetchone()
+            # print("image_rows:", image_rows)
+            res={
+                "data": {
+                    "number": orderNumber,
+                    "price": order_price,
+                    "trip": {
+                    "attraction": {
+                        "id": attraction_Id,
+                        "name": attraction_name,
+                        "address": attraction_address,
+                        "image": image_rows[0]
+                    },
+                    "date": date,
+                    "time": time
+                    },
+                    "contact": {
+                    "name": contact_name,
+                    "email": contact_email,
+                    "phone": contact_phone
+                    },
+                    "status": status
+                }
+                }
+            # print(res)
+            return jsonify(res), 200
+    except Exception as e:
+        return {"error": True, "message": "伺服器內部錯誤" + str(e)}
+    
+   
+        
 
 
 app.run(host="0.0.0.0", port=3000)
