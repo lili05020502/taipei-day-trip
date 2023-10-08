@@ -14,6 +14,9 @@ nav {
     /* border: 1px solid green; */
     border-bottom: 1px solid #E8E8E8;
 }
+a {
+    text-decoration: none;
+}
 
 .nav-bar {
     /* border: 1px solid rgb(169, 11, 38); */
