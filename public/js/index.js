@@ -4,7 +4,7 @@
 // ----------------------------------------------
 async function searchAttractionsByKeyword(keyword) {
     // 透過關鍵字搜尋景點
-    const attResponse = await fetch(`http://52.25.153.68:3000/api/attractions?page=0&keyword=${keyword}`);
+    const attResponse = await fetch(`/api/attractions?page=0&keyword=${keyword}`);
     const attSearchJson = await attResponse.json();
 
     // 如果沒有結果
@@ -33,7 +33,7 @@ function listenmrtlist() {
             input.value = attraction;
             console.log(`${attraction}`);
             const response = await fetch(
-                `http://52.25.153.68:3000/api/attractions?page=0&keyword=${attraction}`
+                `/api/attractions?page=0&keyword=${attraction}`
             );
             const data = await response.json();
             removeattractions();
@@ -75,13 +75,13 @@ async function next_page_Loading(nextPage, keyword = null) {
     console.log("loading的keyword:", keyword)
     if (keyword) {
         const response = await fetch(
-            `http://52.25.153.68:3000/api/attractions?page=${nextPage}&keyword=${keyword}`
+            `/api/attractions?page=${nextPage}&keyword=${keyword}`
         );
         const data = await response.json();
         createAttractionContainer(data);
     } else {
         const response = await fetch(
-            `http://52.25.153.68:3000/api/attractions?page=${nextPage}`
+            `/api/attractions?page=${nextPage}`
         );
         const data = await response.json();
         createAttractionContainer(data);
@@ -108,13 +108,13 @@ function observeListItem(nextPage, keyword) {
 // 第一次進入網頁fetch資料
 async function fetchData() {
 
-    const attresponse = await fetch("http://52.25.153.68:3000/api/attractions?page=0");
+    const attresponse = await fetch("/api/attractions?page=0");
     const data = await attresponse.json();
 
     // console.log(data.nextPage);
     createAttractionContainer(data);
     // observer.observe(footer);
-    fetch("http://52.25.153.68:3000/api/mrts")
+    fetch("/api/mrts")
         .then(response => response.json())
         .then(data => {
             // 獲取MRT站點資料
@@ -148,7 +148,7 @@ searchbtn.addEventListener("click", async () => {
     // console.log("search-input:", ` keyword=${keyword}`);
     console.log("search之前的-keywoed", keyword);
     let attSearchResponse = await fetch(
-        `http://52.25.153.68:3000/api/attractions?page=0&keyword=${keyword}`
+        `/api/attractions?page=0&keyword=${keyword}`
     );
     let attsearchjson = await attSearchResponse.json();
     console.log(attsearchjson);
